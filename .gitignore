@@ -1,0 +1,17 @@
+node_modules/
+dist/
+out/
+*.vsix
+
+.git
+
+.env
+.env.*
+
+stats.json
+stats.backup.json
+stats.tmp.json
+nixieepulse-stats-*.json
+
+.vscode/settings.json
+.vscode/*.log

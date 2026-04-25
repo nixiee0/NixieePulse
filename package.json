@@ -1,0 +1,228 @@
+{
+  "name": "nixieepulse",
+  "displayName": "NixieePulse",
+  "description": "Local coding time tracker for VS Code with JSON storage, dashboard, and GitHub profile SVG sync.",
+  "version": "0.4.5",
+  "publisher": "nixiee0",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "coding-time",
+    "tracker",
+    "wakatime",
+    "github-profile",
+    "dashboard",
+    "stats",
+    "json",
+    "svg"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:nixieepulse.openDashboard",
+    "onCommand:nixieepulse.refreshDashboard",
+    "onCommand:nixieepulse.showToday",
+    "onCommand:nixieepulse.openStatsJson",
+    "onCommand:nixieepulse.exportStatsJson",
+    "onCommand:nixieepulse.resetToday",
+    "onCommand:nixieepulse.syncGithubProfile",
+    "onCommand:nixieepulse.setGithubToken",
+    "onCommand:nixieepulse.clearGithubToken",
+    "onCommand:nixieepulse.openGithubSetup"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "nixieepulse.openDashboard",
+        "title": "NixieePulse: Open Dashboard"
+      },
+      {
+        "command": "nixieepulse.refreshDashboard",
+        "title": "NixieePulse: Refresh Dashboard"
+      },
+      {
+        "command": "nixieepulse.showToday",
+        "title": "NixieePulse: Show Today's Stats"
+      },
+      {
+        "command": "nixieepulse.openStatsJson",
+        "title": "NixieePulse: Open Stats JSON"
+      },
+      {
+        "command": "nixieepulse.exportStatsJson",
+        "title": "NixieePulse: Export Stats JSON"
+      },
+      {
+        "command": "nixieepulse.resetToday",
+        "title": "NixieePulse: Reset Today's Stats"
+      },
+      {
+        "command": "nixieepulse.syncGithubProfile",
+        "title": "NixieePulse: Sync GitHub Profile Now"
+      },
+      {
+        "command": "nixieepulse.setGithubToken",
+        "title": "NixieePulse: Set GitHub Token"
+      },
+      {
+        "command": "nixieepulse.clearGithubToken",
+        "title": "NixieePulse: Clear GitHub Token"
+      },
+      {
+        "command": "nixieepulse.openGithubSetup",
+        "title": "NixieePulse: Open GitHub Sync Setup Guide"
+      }
+    ],
+    "configuration": {
+      "title": "NixieePulse",
+      "properties": {
+        "nixieepulse.idleTimeoutSeconds": {
+          "type": "number",
+          "default": 120,
+          "minimum": 15,
+          "description": "How many seconds after the last editor activity should still count as active coding time."
+        },
+        "nixieepulse.tickIntervalSeconds": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 60,
+          "description": "How often NixieePulse updates active time."
+        },
+        "nixieepulse.saveIntervalSeconds": {
+          "type": "number",
+          "default": 30,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "How often NixieePulse writes collected statistics to stats.json."
+        },
+        "nixieepulse.trackFiles": {
+          "type": "boolean",
+          "default": false,
+          "description": "Store per-file time in stats.json. Paths are stored relative to the workspace when possible."
+        },
+        "nixieepulse.githubProfile.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable GitHub profile README synchronization using the GitHub REST API."
+        },
+        "nixieepulse.githubProfile.owner": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub account or organization that owns the profile README repository."
+        },
+        "nixieepulse.githubProfile.repo": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub repository name for the profile README, usually the same as your username."
+        },
+        "nixieepulse.githubProfile.branch": {
+          "type": "string",
+          "default": "main",
+          "description": "Branch to update."
+        },
+        "nixieepulse.githubProfile.readmePath": {
+          "type": "string",
+          "default": "README.md",
+          "description": "Path to the README file inside the repository."
+        },
+        "nixieepulse.githubProfile.mode": {
+          "type": "string",
+          "default": "svg",
+          "enum": [
+            "markdown",
+            "svg",
+            "both"
+          ],
+          "description": "How the GitHub profile block should be rendered. Use svg for a clean profile card."
+        },
+        "nixieepulse.githubProfile.svgPath": {
+          "type": "string",
+          "default": "assets/coding-activity.svg",
+          "description": "Path to the generated SVG card inside the repository when mode is svg or both."
+        },
+        "nixieepulse.githubProfile.iconFolderPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional local folder with custom SVG language icons. File names should match language ids, for example python.svg, typescript.svg, markdown.svg. Icons are embedded into the generated SVG card."
+        },
+        "nixieepulse.githubProfile.autoSyncMinutes": {
+          "type": "number",
+          "default": 30,
+          "minimum": 0,
+          "maximum": 1440,
+          "description": "Automatic GitHub sync interval in minutes. Set 0 to disable periodic sync."
+        },
+        "nixieepulse.githubProfile.syncOnExit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Try to sync GitHub profile when VS Code shuts down. Periodic sync is still more reliable."
+        },
+        "nixieepulse.githubProfile.commitMessage": {
+          "type": "string",
+          "default": "Update coding activity stats",
+          "description": "Commit message used for GitHub profile updates."
+        },
+        "nixieepulse.githubProfile.maxLanguages": {
+          "type": "number",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Maximum number of languages shown in the generated GitHub profile block."
+        },
+        "nixieepulse.githubProfile.hiddenLanguages": {
+          "type": "array",
+          "default": [
+            "ignore",
+            "gitignore",
+            "pip-requirements",
+            "requirements",
+            "plaintext",
+            "text",
+            "log",
+            "dotenv",
+            "env",
+            "properties",
+            "ini",
+            "toml",
+            "git-commit",
+            "git-rebase",
+            "csv",
+            "tsv"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "Language ids hidden from the generated GitHub profile card. This keeps helper file types like ignore and pip-requirements out of the public SVG."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "pkg": "vsce package --no-dependencies",
+    "package": "npm run pkg"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nixiee0/NixieePulse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nixiee0/NixieePulse/issues"
+  },
+  "homepage": "https://github.com/nixiee0/NixieePulse#readme"
+}
