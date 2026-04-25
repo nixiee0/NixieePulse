@@ -8,6 +8,11 @@
 
 Local coding time tracker for VS Code with JSON storage, dashboard, and GitHub profile SVG sync.
 
+<img width="1587" height="977" alt="image" src="https://github.com/user-attachments/assets/ebadd77b-55d0-45d1-900d-895eb2670f4f" />
+<img width="1913" height="19" alt="image" src="https://github.com/user-attachments/assets/cdbc9676-07a3-412a-a062-3e03dfb11b77" />
+
+
+
 ## Features
 
 - Tracks active coding time locally.
