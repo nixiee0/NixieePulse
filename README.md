@@ -1,3 +1,9 @@
+# :warning: THIS EXTENSION IS CURRENTLY IN THE ALPHA TESTING PHASE. USE IT AT YOUR OWN RISK.
+
+# :warning: IT IS NOT RECOMMENDED TO OPEN MORE THAN ONE VSCODE WINDOW. YOU MAY LOSE YOUR STATISTICAL DATA.
+
+---
+
 # NixieePulse
 
 Local coding time tracker for VS Code with JSON storage, dashboard, and GitHub profile SVG sync.
